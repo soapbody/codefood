@@ -1,6 +1,5 @@
 package com.mateusulrich.codefood.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mateusulrich.codefood.LocalDateTimeConverter;
 import com.mateusulrich.codefood.core.validation.Groups;
 import com.mateusulrich.codefood.core.validation.ValorZeroIncluiDescricao;
@@ -13,9 +12,10 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.groups.ConvertGroup;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class Restaurante {
 	@NotBlank (message = "Nome é obrigatório.")
 	private String nome;
 
-	//@PositiveOrZero
+	@PositiveOrZero
 	//@TaxaFrete
 	//@Multiplo (numero = 5)
 	@Column(name = "taxa_frete", nullable = false)
@@ -51,7 +51,6 @@ public class Restaurante {
 	@JoinColumn(name = "cozinha_id", nullable = false)
 	private Cozinha cozinha;
 
-	@JsonIgnore
 	@Embedded
 	private Endereco endereco;
 
@@ -64,12 +63,12 @@ public class Restaurante {
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "timestamp")
 	@Convert(converter = LocalDateTimeConverter.class)
-	private LocalDateTime creationDate;
+	private OffsetDateTime creationDate;
 
 	@UpdateTimestamp
 	@Column(nullable = false, columnDefinition = "timestamp")
 	@Convert(converter = LocalDateTimeConverter.class)
-	private LocalDateTime lastUpdate;
+	private OffsetDateTime lastUpdate;
 
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produto;

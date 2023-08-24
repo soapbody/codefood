@@ -1,4 +1,4 @@
-package com.mateusulrich.codefood.exceptionhandler;
+package com.mateusulrich.codefood.api.exceptionhandler;
 
 import lombok.Getter;
 

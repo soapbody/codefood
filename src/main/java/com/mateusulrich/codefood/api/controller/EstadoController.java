@@ -1,9 +1,10 @@
-package com.mateusulrich.codefood.controller;
+package com.mateusulrich.codefood.api.controller;
 
+import com.mateusulrich.codefood.api.assembler.EstadoMapper;
+import com.mateusulrich.codefood.api.model.EstadoDTO;
 import com.mateusulrich.codefood.domain.model.Estado;
 import com.mateusulrich.codefood.domain.repository.EstadoRepository;
 import com.mateusulrich.codefood.domain.service.CadastroEstadoService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,27 +19,31 @@ public class EstadoController {
 	private EstadoRepository estadoRepository;
 	@Autowired
 	private CadastroEstadoService cadastroEstado;
+	@Autowired
+	private EstadoMapper estadoMapper;
 	@GetMapping
-	public List<Estado> listar () {
-		return estadoRepository.findAll ();
+	public List<EstadoDTO> listar () {
+		return estadoMapper.toCollectionDTO (estadoRepository.findAll ());
 	}
 	@GetMapping ("/{estadoId}")
-	public Estado buscar (@PathVariable Long estadoId) {
-		return cadastroEstado.buscarEstado (estadoId);
+	public EstadoDTO buscar (@PathVariable Long estadoId) {
+		return estadoMapper.toDTO (cadastroEstado.buscarEstado (estadoId));
 
 	}
 	@PostMapping
 	@ResponseStatus (HttpStatus.CREATED)
-	public Estado adicionar (@Valid @RequestBody Estado estado) {
-		return cadastroEstado.salvar (estado);
+	public EstadoDTO adicionar (@Valid @RequestBody EstadoDTO estadoDTO) {
+		Estado estado = estadoMapper.toDomainObject (estadoDTO);
+		return estadoMapper.toDTO (cadastroEstado.salvar (estado));
 	}
 
 	@PutMapping ("/{estadoId}")
-	public Estado atualizar (@Valid @PathVariable Long estadoId,
-							 @RequestBody Estado estado) {
+	public EstadoDTO atualizar (@Valid @PathVariable Long estadoId,
+							 @RequestBody EstadoDTO estadoDTO) {
 		Estado estadoAtual = cadastroEstado.buscarEstado (estadoId);
-		BeanUtils.copyProperties (estado, estadoAtual, "id");
-		return cadastroEstado.salvar (estadoAtual);
+		//BeanUtils.copyProperties (estado, estadoAtual, "id");
+		estadoMapper.copyToDomainObject (estadoDTO, estadoAtual);
+		return estadoMapper.toDTO (cadastroEstado.salvar (estadoAtual));
 
 	}
 	@DeleteMapping ("/{estadoId}")

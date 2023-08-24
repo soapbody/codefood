@@ -1,6 +1,5 @@
 package com.mateusulrich.codefood.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mateusulrich.codefood.core.validation.Groups;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,9 +30,11 @@ public class Cozinha {
 	@Column (nullable = false)
 	private String descricao;
 
-	@JsonIgnore
 	@OneToMany(mappedBy = "cozinha")
 	private List<Restaurante> restaurantes = new ArrayList<> ();
+
+	public Cozinha () {
+	}
 
 	@Override
 	public boolean equals (Object o) {

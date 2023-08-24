@@ -1,4 +1,4 @@
-package com.mateusulrich.codefood.controller;
+package com.mateusulrich.codefood.api.controller;
 
 import com.mateusulrich.codefood.domain.model.Cozinha;
 import com.mateusulrich.codefood.domain.model.Restaurante;

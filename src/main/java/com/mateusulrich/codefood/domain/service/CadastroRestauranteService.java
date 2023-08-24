@@ -6,6 +6,7 @@ import com.mateusulrich.codefood.domain.model.Restaurante;
 import com.mateusulrich.codefood.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CadastroRestauranteService {
@@ -14,7 +15,7 @@ public class CadastroRestauranteService {
 	private RestauranteRepository restauranteRepository;
 	@Autowired
 	private CadastroCozinhaService cozinhaService;
-
+	@Transactional
 	public Restaurante salvar(Restaurante restaurante) {
 		Cozinha cozinha = cozinhaService.buscarCozinha (restaurante.getCozinha().getId());
 		restaurante.setCozinha(cozinha);
@@ -23,4 +24,5 @@ public class CadastroRestauranteService {
 	public Restaurante buscarRestaurante (Long restauranteId) {
 		return restauranteRepository.findById (restauranteId).orElseThrow (() -> new RestauranteNaoEncontradoException (restauranteId));
 	}
+
 }

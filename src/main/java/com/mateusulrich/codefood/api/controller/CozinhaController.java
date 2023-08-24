@@ -1,9 +1,11 @@
-package com.mateusulrich.codefood.controller;
+package com.mateusulrich.codefood.api.controller;
 
+import com.mateusulrich.codefood.api.assembler.CozinhaMapper;
+import com.mateusulrich.codefood.api.model.CozinhaDTO;
+import com.mateusulrich.codefood.api.model.input.CozinhaInput;
 import com.mateusulrich.codefood.domain.model.Cozinha;
 import com.mateusulrich.codefood.domain.repository.CozinhaRepository;
 import com.mateusulrich.codefood.domain.service.CadastroCozinhaService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,30 +22,33 @@ public class CozinhaController {
 
 	@Autowired
 	private CadastroCozinhaService cadastroCozinha;
+	@Autowired
+	private CozinhaMapper cozinhaMapper;
 
 	@GetMapping
-	public List<Cozinha> listar() {
-		return cozinhaRepository.findAll ();
+	public List<CozinhaDTO> listar() {
+		return cozinhaMapper.toCollectionDTO (cozinhaRepository.findAll ());
 	}
 
 	@GetMapping("/{cozinhaId}")
-	public Cozinha buscar(@PathVariable Long cozinhaId) {
-		return cadastroCozinha.buscarCozinha (cozinhaId);
+	public CozinhaDTO buscar(@PathVariable Long id) {
+		return cozinhaMapper.toDTO (cadastroCozinha.buscarCozinha (id));
 	}
 
 	@PostMapping
 	@ResponseStatus (HttpStatus.CREATED)
-	public Cozinha adicionar(@Valid @RequestBody Cozinha cozinha) {
-		return cadastroCozinha.salvar(cozinha);
+	public CozinhaDTO adicionar(@Valid @RequestBody CozinhaInput cozinhaInput) {
+		return cozinhaMapper.toDTO (cozinhaMapper.toDomainObject (cozinhaInput));
 	}
 
 	@PutMapping ("/{cozinhaId}")
-	public Cozinha atualizar(@Valid @PathVariable Long cozinhaId,
-							 @RequestBody Cozinha cozinha) {
+	public CozinhaDTO atualizar(@Valid @PathVariable Long cozinhaId,
+							 @RequestBody CozinhaInput cozinhaInput) {
 
 		Cozinha cozinhaAtual = cadastroCozinha.buscarCozinha (cozinhaId);
-			BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
-			return cadastroCozinha.salvar(cozinhaAtual);
+			//BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
+			cozinhaMapper.copyToDomainObject (cozinhaInput, cozinhaAtual);
+			return cozinhaMapper.toDTO (cadastroCozinha.salvar(cozinhaAtual));
 	}
 
 	@DeleteMapping ("/{cozinhaId}")
