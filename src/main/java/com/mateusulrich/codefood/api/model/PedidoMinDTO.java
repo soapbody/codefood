@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-
+//@JsonFilter ("pedidoFilter")
 @Getter
 @Setter
 public class PedidoMinDTO {

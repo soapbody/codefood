@@ -44,6 +44,75 @@ public class RestauranteController {
 	private SmartValidator validator;
 	@Autowired
 	private RestauranteMapper restauranteMapper;
+
+
+	@GetMapping()
+	public List<RestauranteDTO> listarTodos() {
+		return restauranteMapper.toCollectionDTO (restauranteRepository.findAll ());
+	}
+
+//	@GetMapping
+//	public MappingJacksonValue listar(@RequestParam(required = false) String projecao) {
+//		List<Restaurante> restaurantes = restauranteRepository.findAll ();
+//		List<RestauranteDTO> restaurantesDto = restauranteMapper.toCollectionDTO (restauranteRepository.findAll ());
+//		MappingJacksonValue restaurantesWrapper = new MappingJacksonValue (restaurantesDto);
+//
+//		restaurantesWrapper.setSerializationView (RestauranteView.Resumo.class);
+//
+//		if ("apenas-nome".equals (projecao)){
+//			restaurantesWrapper.setSerializationView (RestauranteView.ApenasNome.class);
+//		}else if("completo".equals (projecao)) {
+//			restaurantesWrapper.setSerializationView (null);
+//		}
+//		return restaurantesWrapper;
+//	}
+	@GetMapping("/{restauranteId}")
+	public RestauranteDTO buscar(@PathVariable Long restauranteId) {
+		 Restaurante restaurante = cadastroRestaurante.buscarRestaurante(restauranteId);
+		 return restauranteMapper.toDTO (restaurante);
+	}
+
+	@PostMapping
+	@ResponseStatus (HttpStatus.CREATED)
+	public RestauranteDTO adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
+		try {
+			Restaurante restaurante = restauranteMapper.toDomainObject (restauranteInput);
+			return restauranteMapper.toDTO (cadastroRestaurante.salvar (restaurante));
+		}catch (CozinhaNãoEncontradaException | CidadeNaoEncontradaException e) {
+			throw new NegocioException (e.getMessage ());
+		}
+
+	}
+	@PutMapping("/{restauranteId}")
+	public RestauranteDTO atualizar(@Valid @PathVariable Long restauranteId,
+									   @RequestBody RestauranteInput restauranteInput) {
+
+		try {
+			//Restaurante restaurante = restauranteMapper.toDomainObject (restauranteInput);
+			Restaurante restauranteAtual = cadastroRestaurante.buscarRestaurante (restauranteId);
+			restauranteMapper.copyToDomainObject (restauranteInput, restauranteAtual);
+			//BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco");
+			return restauranteMapper.toDTO (cadastroRestaurante.salvar(restauranteAtual));
+				}catch (CozinhaNãoEncontradaException | CidadeNaoEncontradaException e) {
+					throw new NegocioException (e.getMessage ());
+				}
+
+	}
+
+	@PatchMapping("/{restauranteId}")
+	public RestauranteDTO atualizarParcial(@Valid @PathVariable Long restauranteId,
+										@RequestBody Map<String, Object> campos, HttpServletRequest request) {
+		Restaurante restauranteAtual = cadastroRestaurante.buscarRestaurante (restauranteId);
+		merge(campos, restauranteAtual, request);
+		RestauranteInput restauranteInput = new RestauranteInput ();
+		BeanUtils.copyProperties (restauranteAtual, restauranteInput);
+
+		validate(restauranteAtual, "restaurante");
+
+
+		return atualizar(restauranteId, restauranteInput);
+	}
+
 	@PutMapping("/{restauranteId}/abertura")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void abertura(@PathVariable Long restauranteId) {
@@ -82,57 +151,6 @@ public class RestauranteController {
 			throw new NegocioException (exception.getMessage ());
 		}
 
-	}
-	@GetMapping("/listar")
-	public List<RestauranteDTO> listar() {
-		return restauranteMapper.toCollectionDTO (restauranteRepository.findAll ());
-	}
-
-	@GetMapping("/{restauranteId}")
-	public RestauranteDTO buscar(@PathVariable Long restauranteId) {
-		 Restaurante restaurante = cadastroRestaurante.buscarRestaurante(restauranteId);
-		 return restauranteMapper.toDTO (restaurante);
-	}
-	@PostMapping
-	@ResponseStatus (HttpStatus.CREATED)
-	public RestauranteDTO adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
-		try {
-			Restaurante restaurante = restauranteMapper.toDomainObject (restauranteInput);
-			return restauranteMapper.toDTO (cadastroRestaurante.salvar (restaurante));
-		}catch (CozinhaNãoEncontradaException | CidadeNaoEncontradaException e) {
-			throw new NegocioException (e.getMessage ());
-		}
-
-	}
-
-	@PutMapping("/{restauranteId}")
-	public RestauranteDTO atualizar(@Valid @PathVariable Long restauranteId,
-									   @RequestBody RestauranteInput restauranteInput) {
-
-		try {
-			//Restaurante restaurante = restauranteMapper.toDomainObject (restauranteInput);
-			Restaurante restauranteAtual = cadastroRestaurante.buscarRestaurante (restauranteId);
-			restauranteMapper.copyToDomainObject (restauranteInput, restauranteAtual);
-			//BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco");
-			return restauranteMapper.toDTO (cadastroRestaurante.salvar(restauranteAtual));
-				}catch (CozinhaNãoEncontradaException | CidadeNaoEncontradaException e) {
-					throw new NegocioException (e.getMessage ());
-				}
-
-	}
-
-	@PatchMapping("/{restauranteId}")
-	public RestauranteDTO atualizarParcial(@Valid @PathVariable Long restauranteId,
-										@RequestBody Map<String, Object> campos, HttpServletRequest request) {
-		Restaurante restauranteAtual = cadastroRestaurante.buscarRestaurante (restauranteId);
-		merge(campos, restauranteAtual, request);
-		RestauranteInput restauranteInput = new RestauranteInput ();
-		BeanUtils.copyProperties (restauranteAtual, restauranteInput);
-
-		validate(restauranteAtual, "restaurante");
-
-
-		return atualizar(restauranteId, restauranteInput);
 	}
 	private void validate(Restaurante restaurante, String objectName) {
 		BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult (restaurante, objectName);

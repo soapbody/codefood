@@ -53,7 +53,7 @@ public class Restaurante {
 	@Valid
 	@ConvertGroup (to = Groups.CozinhaId.class)
 	@NotNull
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cozinha_id", nullable = false)
 	private Cozinha cozinha;
 

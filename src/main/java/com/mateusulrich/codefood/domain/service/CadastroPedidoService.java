@@ -5,6 +5,7 @@ import com.mateusulrich.codefood.domain.exception.PedidoNaoEncontradoException;
 import com.mateusulrich.codefood.domain.model.*;
 import com.mateusulrich.codefood.domain.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +31,7 @@ public class CadastroPedidoService {
 	public Pedido buscarPedido(String codigo) {
 		return pedidoRepository.findByCodigo (codigo).orElseThrow(() -> new PedidoNaoEncontradoException (codigo));
 	}
-	public List<Pedido> buscarTodosPedido() {
+	public List<Pedido> buscarTodosPedido(Specification<Pedido> pedidoSpecification) {
 		return pedidoRepository.findAll ();
 	}
 	@Transactional

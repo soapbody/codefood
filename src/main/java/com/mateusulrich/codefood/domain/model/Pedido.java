@@ -50,7 +50,7 @@ public class Pedido {
 	@JoinColumn(name = "restaurante_id")
 	private Restaurante restaurante;
 
-	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
 	private List<ItemPedido> itens = new ArrayList<> ();
 
 	@ManyToOne
@@ -60,7 +60,7 @@ public class Pedido {
 	@Embedded
 	private Endereco enderecoEntrega;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn (name = "forma_pagamento_id")
 	private FormaPagamento formaPagamento;
 
