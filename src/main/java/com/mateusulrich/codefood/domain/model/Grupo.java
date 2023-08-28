@@ -24,4 +24,11 @@ public class Grupo {
 	)
 	private List<Permissao> permissoes;
 
+	public boolean removerPermissao(Permissao permissao) {
+		return getPermissoes().remove(permissao);
+	}
+	public boolean inserirPermissao(Permissao permissao) {
+		return getPermissoes().add (permissao);
+	}
+
 }

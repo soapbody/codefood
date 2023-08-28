@@ -21,7 +21,7 @@ public class Produto {
 	private BigDecimal preco;
 	private Boolean ativo;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "restaurante_id", nullable = false, foreignKey = @ForeignKey(name = "fk_restaurante"))
 	private Restaurante restaurante;
 

@@ -2,6 +2,7 @@ package com.mateusulrich.codefood.api.assembler;
 
 import com.mateusulrich.codefood.api.model.RestauranteDTO;
 import com.mateusulrich.codefood.api.model.input.RestauranteInput;
+import com.mateusulrich.codefood.domain.model.Cidade;
 import com.mateusulrich.codefood.domain.model.Cozinha;
 import com.mateusulrich.codefood.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
@@ -30,6 +31,8 @@ public class RestauranteMapper {
 		// Para evitar uma exception hibernate.HibernateException: identifier of an instance of
 		//com.mateusulrich.codefood.domain.model.Cozinha was altered from 1 to 2.
 		restaurante.setCozinha (new Cozinha ());
+		if (restaurante.getEndereco () != null)
+			restaurante.getEndereco ().setCidade (new Cidade ());
 		modelMapper.map (restauranteInput, restaurante);
 	}
 }

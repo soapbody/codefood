@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 @Converter(autoApply = true)
-public class LocalDateTimeConverter implements AttributeConverter<LocalDateTime, Timestamp> {
+public class OffsetTimeConverter implements AttributeConverter<LocalDateTime, Timestamp> {
 
 	private static final ZoneId UTC_ZONE_ID = ZoneId.of("UTC");
 	private static final ZoneId SYSTEM_DEFAULT_ZONE_ID = ZoneId.systemDefault();

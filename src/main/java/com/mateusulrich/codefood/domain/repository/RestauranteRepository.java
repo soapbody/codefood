@@ -18,7 +18,6 @@ public interface RestauranteRepository extends
 	@Transactional
 	@Modifying
 	void deleteById (Long id);
-
 	@Query(value = "from Restaurante r join fetch r.cozinha left join fetch r.formasPagamento ")
 	List<Restaurante> findAll();
 	List<Restaurante> findByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);

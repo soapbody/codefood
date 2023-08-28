@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.ConvertGroup;
@@ -24,6 +25,7 @@ public class Cidade {
 	@Column (nullable = false)
 	private String nome;
 
+	@Valid
 	@NotNull
 	@ConvertGroup (from = Default.class, to = Groups.EstadoId.class)
 	@ManyToOne

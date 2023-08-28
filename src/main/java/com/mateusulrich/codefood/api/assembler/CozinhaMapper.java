@@ -5,10 +5,11 @@ import com.mateusulrich.codefood.api.model.input.CozinhaInput;
 import com.mateusulrich.codefood.domain.model.Cozinha;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+@Component
 public class CozinhaMapper {
 
 	@Autowired

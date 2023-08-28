@@ -41,18 +41,21 @@ create table restaurante (
 	cozinha_id bigint not null,
 	nome varchar(80) not null,
 	taxa_frete decimal(10,2) not null,
-	last_update timestamp not null,
-	creation_date timestamp not null,
+	last_update TIMESTAMPTZ DEFAULT (current_timestamp AT TIME ZONE 'UTC') NOT NULL,
+	creation_date TIMESTAMPTZ DEFAULT (current_timestamp AT TIME ZONE 'UTC') NOT NULL,
 
-	cidade_id bigint,
-	cep varchar(9),
-	logradouro varchar(100),
-	numero varchar(20),
-	complemento varchar(60),
-	bairro varchar(60),
+	endereco_cidade_id bigint,
+	endereco_cep varchar(9),
+	endereco_logradouro varchar(100),
+	endereco_numero varchar(20),
+	endereco_complemento varchar(60),
+	endereco_bairro varchar(60),
 
 	primary key (id)
 );
+
+alter table restaurante add ativo boolean not null;
+update restaurante set ativo = true;
 
 create table restaurante_forma_pagamento (
 	restaurante_id bigint not null,
@@ -66,7 +69,7 @@ create table usuario (
 	nome varchar(80) not null,
 	email varchar(255) not null,
 	senha varchar(255) not null,
-	creation_date timestamp not null,
+	creation_date TIMESTAMPTZ DEFAULT (current_timestamp AT TIME ZONE 'UTC') not null,
 
 	primary key (id)
 );
