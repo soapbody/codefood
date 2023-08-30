@@ -1,26 +1,29 @@
 package com.mateusulrich.codefood.api.controller;
 
+import com.google.common.collect.ImmutableMap;
 import com.mateusulrich.codefood.api.assembler.PedidoInputMapper;
 import com.mateusulrich.codefood.api.assembler.PedidoMapper;
 import com.mateusulrich.codefood.api.assembler.PedidoMinMapper;
 import com.mateusulrich.codefood.api.model.PedidoDTO;
 import com.mateusulrich.codefood.api.model.PedidoMinDTO;
 import com.mateusulrich.codefood.api.model.input.PedidoInput;
+import com.mateusulrich.codefood.core.data.PageableTranslator;
 import com.mateusulrich.codefood.domain.exception.EntidadeNaoEncontradaException;
 import com.mateusulrich.codefood.domain.exception.NegocioException;
+import com.mateusulrich.codefood.domain.filter.PedidoFilter;
 import com.mateusulrich.codefood.domain.model.Pedido;
 import com.mateusulrich.codefood.domain.model.Usuario;
 import com.mateusulrich.codefood.domain.repository.PedidoRepository;
-import com.mateusulrich.codefood.domain.repository.filter.PedidoFilter;
 import com.mateusulrich.codefood.domain.service.CadastroPedidoService;
 import com.mateusulrich.codefood.infrastructure.repository.spec.PedidoSpecs;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
-
 @RestController
 @RequestMapping("/pedidos")
 public class PedidoController {
@@ -54,9 +57,11 @@ public class PedidoController {
 //	}
 
 	@GetMapping
-	public List<PedidoMinDTO> buscarTodos(PedidoFilter pedidoFilter) {
-		return pedidoMinMapper.toCollectionDTO (
-				pedidoRepository.findAll (PedidoSpecs.usandoFiltro (pedidoFilter)));
+	public Page<PedidoMinDTO> buscarTodos(PedidoFilter pedidoFilter, @PageableDefault(size = 10) Pageable pageable) {
+		pageable = traduzirPageable (pageable);
+
+		Page<Pedido> pedidoPage = pedidoRepository.findAll (PedidoSpecs.usandoFiltro (pedidoFilter), pageable);;
+		return new PageImpl<> (pedidoMinMapper.toCollectionDTO (pedidoPage.getContent ()), pageable, pedidoPage.getTotalElements ());
 	}
 	@GetMapping("/{codigo}")
 	public PedidoDTO buscar(@PathVariable String codigo) {
@@ -75,6 +80,17 @@ public class PedidoController {
 		}catch (EntidadeNaoEncontradaException e) {
 			throw new NegocioException (e.getMessage ());
 		}
+	}
+
+	private Pageable traduzirPageable(Pageable pageable) {
+		//ou Map.of
+		var mapeamento = ImmutableMap.of(
+				"codigo", "codigo",
+				"restaurante.nome", "restaurante.nome",
+				"nomeCliente", "cliente.nome",
+				"valorTotal", "valorTotal"
+		);
+		return PageableTranslator.translate (pageable, mapeamento);
 	}
 
 

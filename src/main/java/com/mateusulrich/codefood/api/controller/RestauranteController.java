@@ -13,6 +13,8 @@ import com.mateusulrich.codefood.domain.exception.RestauranteNaoEncontradoExcept
 import com.mateusulrich.codefood.domain.model.Restaurante;
 import com.mateusulrich.codefood.domain.repository.RestauranteRepository;
 import com.mateusulrich.codefood.domain.service.CadastroRestauranteService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +26,6 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;

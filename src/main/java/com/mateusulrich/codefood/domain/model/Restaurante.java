@@ -2,17 +2,17 @@ package com.mateusulrich.codefood.domain.model;
 
 import com.mateusulrich.codefood.core.validation.Groups;
 import com.mateusulrich.codefood.core.validation.ValorZeroIncluiDescricao;
+import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.groups.ConvertGroup;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
-import javax.validation.groups.ConvertGroup;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class Restaurante {
 	@Valid
 	@ConvertGroup (to = Groups.CozinhaId.class)
 	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne//(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cozinha_id", nullable = false)
 	private Cozinha cozinha;
 

@@ -1,4 +1,4 @@
-package com.mateusulrich.codefood.domain.repository.filter;
+package com.mateusulrich.codefood.domain.filter;
 
 import lombok.Getter;
 import lombok.Setter;

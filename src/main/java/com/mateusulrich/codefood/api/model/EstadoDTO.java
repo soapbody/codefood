@@ -1,10 +1,10 @@
 package com.mateusulrich.codefood.api.model;
 
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 public class EstadoDTO {

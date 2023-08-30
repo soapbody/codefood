@@ -1,13 +1,14 @@
 package com.mateusulrich.codefood;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
+
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-@Converter(autoApply = true)
+@Converter (autoApply = true)
 public class OffsetTimeConverter implements AttributeConverter<LocalDateTime, Timestamp> {
 
 	private static final ZoneId UTC_ZONE_ID = ZoneId.of("UTC");

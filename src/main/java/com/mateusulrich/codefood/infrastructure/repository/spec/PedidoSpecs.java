@@ -1,9 +1,9 @@
 package com.mateusulrich.codefood.infrastructure.repository.spec;
 
 import com.mateusulrich.codefood.domain.model.Pedido;
-import com.mateusulrich.codefood.domain.repository.filter.PedidoFilter;
+import com.mateusulrich.codefood.domain.filter.PedidoFilter;
 import org.springframework.data.jpa.domain.Specification;
-import javax.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Predicate;
 import java.util.ArrayList;
 
 
@@ -11,8 +11,10 @@ public class PedidoSpecs {
 
 	public static Specification<Pedido> usandoFiltro(PedidoFilter filter) {
 		return (root, query, criteriaBuilder) -> {
-			root.fetch ("cliente");
-			root.fetch ("restaurante");
+			if (Pedido.class.equals (query.getResultType ())) {
+				root.fetch ("cliente");
+				root.fetch ("restaurante").fetch ("cozinha");
+			}
 			var predicates = new ArrayList<Predicate> ();
 			if (filter.getClienteId () != null) {
 				predicates.add (criteriaBuilder.equal (root.get ("cliente"), filter.getClienteId ()));

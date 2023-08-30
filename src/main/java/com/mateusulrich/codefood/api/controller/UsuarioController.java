@@ -10,11 +10,11 @@ import com.mateusulrich.codefood.domain.exception.NegocioException;
 import com.mateusulrich.codefood.domain.exception.UsuarioNaoEncontradoException;
 import com.mateusulrich.codefood.domain.model.Usuario;
 import com.mateusulrich.codefood.domain.service.CadastroUsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController

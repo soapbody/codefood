@@ -8,11 +8,11 @@ import com.mateusulrich.codefood.domain.model.Restaurante;
 import com.mateusulrich.codefood.domain.repository.ProdutoRepository;
 import com.mateusulrich.codefood.domain.service.CadastroProdutoService;
 import com.mateusulrich.codefood.domain.service.CadastroRestauranteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController

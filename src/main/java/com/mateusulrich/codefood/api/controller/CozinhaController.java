@@ -6,11 +6,15 @@ import com.mateusulrich.codefood.api.model.input.CozinhaInput;
 import com.mateusulrich.codefood.domain.model.Cozinha;
 import com.mateusulrich.codefood.domain.repository.CozinhaRepository;
 import com.mateusulrich.codefood.domain.service.CadastroCozinhaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -25,8 +29,11 @@ public class CozinhaController {
 	private CozinhaMapper cozinhaMapper;
 
 	@GetMapping
-	public List<CozinhaDTO> listar() {
-		return cozinhaMapper.toCollectionDTO (cozinhaRepository.findAll ());
+	public Page<CozinhaDTO> listar(@PageableDefault(size = 10) Pageable pageable) {
+		Page<Cozinha> cozinhaPage = cozinhaRepository.findAll (pageable);
+		List<CozinhaDTO> cozinhaDTOS = cozinhaMapper.toCollectionDTO (cozinhaPage.getContent ());
+		Page<CozinhaDTO> cozinhaDTOPage = new PageImpl<> (cozinhaDTOS, pageable, cozinhaPage.getTotalElements ());
+		return cozinhaDTOPage;
 	}
 
 	@GetMapping("/{cozinhaId}")
