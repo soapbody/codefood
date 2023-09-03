@@ -25,8 +25,7 @@ public class CadastroPedidoService {
 	private CadastroFormaPagamentoService formaPagamentoService;
 	@Autowired
 	private CadastroCidadeService cidadeService;
-	@Autowired
-	private CadastroItemPedidoService itemPedidoService;
+
 
 	public Pedido buscarPedido(String codigo) {
 		return pedidoRepository.findByCodigo (codigo).orElseThrow(() -> new PedidoNaoEncontradoException (codigo));

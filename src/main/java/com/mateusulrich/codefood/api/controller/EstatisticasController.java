@@ -36,7 +36,7 @@ public class EstatisticasController {
 	@GetMapping(path = "/vendas-diarias-pdf", produces = MediaType.APPLICATION_PDF_VALUE)
 	public ResponseEntity<byte[]> consultarVendasDiariasPdf(VendaDiariaFilter filter,
 																 @RequestParam(required = false,
-														defaultValue = "+03:00")String timeOffset) {
+														defaultValue = "-03:00")String timeOffset) {
 
 		byte[] bytesPdf = vendaReportService.emitirVendasDiarias (filter, timeOffset);
 
