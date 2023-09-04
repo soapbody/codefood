@@ -29,9 +29,9 @@ public class StorageProperties {
 	@Setter
 	public class S3 {
 		//@Value ("${AWS_ACCESS_KEY_ID}")
-		private String idChaveAcesso;// = "AKIA2O2VS4ML67456TR6";
+		private String idChaveAcesso;
 		//@Value("${AWS_SECRET_ACCESS_KEY}")
-		private String chaveAcessoSecreta; //= "G8o3A7ZVMPcwQJ99qVc7/VdR1RpqAh4+ZDlbiTgC";
+		private String chaveAcessoSecreta;
 		private String bucket;
 		private Regions regiao;
 		private String diretorioFotos;
