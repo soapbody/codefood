@@ -13,21 +13,21 @@ public class StatusPedidoService {
 	@Autowired
 	private EnvioEmailService emailService;
 	@Transactional
+	public void cancelamento (String codigo) {
+		Pedido pedido = pedidoService.buscarPedido(codigo);
+		pedido.cancelar();
+	}
+	@Transactional
 	public void confirmar(String codigo) {
 		Pedido pedido = pedidoService.buscarPedido(codigo);
 		pedido.confirmar ();
 		var mensagem = Mensagem.builder ()
 				.assunto (pedido.getRestaurante ().getNome () + " - Pedido Confirmado")
-				.corpo ("O pedido de código <strong>"
-				+ pedido.getCodigo () + "</strong> foi confirmado!")
+				.corpo ("pedido-confirmado2.html")
+				.variavel("pedido", pedido)
 				.destinatario (pedido.getCliente ().getEmail ())
 				.build ();
 		emailService.enviar (mensagem);
-	}
-	@Transactional
-	public void cancelamento (String codigo) {
-		Pedido pedido = pedidoService.buscarPedido(codigo);
-		pedido.cancelar();
 	}
 	@Transactional
 	public void pedidoEntregado (String codigo) {

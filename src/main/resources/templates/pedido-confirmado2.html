@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+        }
+
+        .header {
+            text-align: center;
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px;
+        }
+
+        .thank-you {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .order-details h2 {
+            font-size: 18px;
+        }
+
+        .order-details p {
+            font-size: 16px;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<table class="container" cellpadding="0" cellspacing="0">
+    <tr>
+        <td class="header">
+            <h1>Confirmação de Pedido</h1>
+        </td>
+    </tr>
+    <tr>
+        <td class="thank-you">Olá, ${pedido.cliente.nome}!</td>
+    </tr>
+    <tr>
+        <td class="order-details">
+            <h2>Detalhes do Pedido: #${pedido.id}</h2>
+            <p><strong>Restaurante:</strong> ${pedido.restaurante.nome}</p>
+            <p><strong>Itens do Pedido:</strong></p>
+            <table>
+                <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Valor</th>
+                </tr>
+                </thead>
+                <tbody>
+                <#list pedido.itens as item>
+                <tr>
+                    <td>${item.produto.nome}</td>
+                    <td>${item.quantidade}</td>
+                    <td>${item.precoTotal?string.currency}</td>
+                </tr>
+                </#list>
+                </tbody>
+            </table>
+            <p><strong>Forma de Pagamento:</strong> ${pedido.formaPagamento.descricao}</p>
+            <p><strong>Taxa de Frete:</strong> ${pedido.taxaFrete?string.currency}</p>
+            <p><strong>Total do Pedido:</strong> ${pedido.valorTotal?string.currency}</p>
+            <h3>Endereço de Entrega:</h3>
+            <p><strong>Rua:</strong> ${pedido.enderecoEntrega.logradouro}</p>
+            <p><strong>Número:</strong> ${pedido.enderecoEntrega.numero}</p>
+            <p><strong>Complemento:</strong> ${pedido.enderecoEntrega.complemento}</p>
+            <p><strong>Bairro:</strong> ${pedido.enderecoEntrega.bairro}</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Seu pedido está em processamento e será enviado em breve. Fique de olho no seu e-mail para atualizações.</p>
+            <p>Obrigado por escolher nosso restaurante!</p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

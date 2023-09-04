@@ -15,4 +15,8 @@ import org.springframework.validation.annotation.Validated;
 public class EmailProperties {
 	@NotNull
 	private String remetente;
+	private TipoEmail tipoEmail = TipoEmail.TESTE;
+	public enum TipoEmail{
+		TESTE, PROD
+	}
 }
