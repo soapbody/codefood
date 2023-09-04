@@ -5,7 +5,7 @@ import lombok.*;
 import java.util.Map;
 import java.util.Set;
 
-public interface EnvioEmailService {
+public interface EnvioEmailService{
 	void enviar(Mensagem mensagem);
 	@Getter
 	@Builder

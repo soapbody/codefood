@@ -15,8 +15,9 @@ import org.springframework.validation.annotation.Validated;
 public class EmailProperties {
 	@NotNull
 	private String remetente;
-	private TipoEmail tipoEmail = TipoEmail.TESTE;
+	private String sandboxDestinatario;
+	private TipoEmail tipoEmail = TipoEmail.FAKE;
 	public enum TipoEmail{
-		TESTE, PROD
+		FAKE, SMTP, SANDBOX
 	}
 }
